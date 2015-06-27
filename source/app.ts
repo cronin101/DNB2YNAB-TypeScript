@@ -29,7 +29,7 @@ class DNBEntry{
     // Remove commas from all fields
     const [payee, outflow, inflow] = 
       [this.payee, this.outflow, this.inflow]
-          .map(s => s.replace(/,/g, ''))
+          .map(s => s.replace(/[,"]/g, ''))
         
     // Correct field ordering for YNAB  
     return [date, payee, "", "", outflow, inflow]
@@ -47,7 +47,7 @@ class DNBEntry{
 
 // Translates DNB CSV in $source into YNAB CSV in $target
 const transform_CSV = (source: JQuery, target: JQuery) => {
-  const source_text = source.val(); 
+  const source_text = source.val().replace(/""/, ""); 
   const parsed_data = parse.parse(
       source_text,
       { delimiter: ';', header: true, skipEmptyLines: true })
@@ -85,4 +85,6 @@ $(() => {
   $('#transform').click(() => transform_CSV($('#source'), $('#target')));
   
   $('#download').click(() => save_text_to_file($('#target'), 'transactions.csv'));
+  
+  //$('#datepicker').datepicker();
 })

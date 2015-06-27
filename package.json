@@ -10,6 +10,7 @@
   "license": "MIT",
   "dependencies": {
     "jquery": "^2.1.4",
+    "jquery-ui": "^1.10.5",
     "node-libs-browser": "^0.5.2",
     "papaparse": "^4.1.1"
   },

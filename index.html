@@ -1,6 +1,8 @@
-<html>
+<html lang="en">
   <head>
+    <meta charset="utf-8">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
     <script src="target/bundle.js"></script>
       
     <style>
@@ -40,6 +42,8 @@
 "Date";"Description";"Interest date";"From account";"Deposits"
 "01.02.2003";"Example Income";"01.02.2003";"";"49,534.96"
 "01.02.2003";"Example Outgoing Payment";"01.02.2003";"2,490.00";""</textarea>
+    <br/>
+    Optionally, filter-out entries before <input id="datepicker" type="text" placeholder="a given date"></input>.
     <br/>
     Then, <button class="green" id="transform">transform it into the YNAB format!</button>
     <br/>
