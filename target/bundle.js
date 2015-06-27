@@ -60,7 +60,7 @@
 	        var date = this.date.replace(/\./g, "/");
 	        // Remove commas from all fields
 	        var _a = [this.payee, this.outflow, this.inflow]
-	            .map(function (s) { return s.replace(/[,"]/g, ''); }), payee = _a[0], outflow = _a[1], inflow = _a[2];
+	            .map(function (s) { return s.replace(/,/g, ''); }), payee = _a[0], outflow = _a[1], inflow = _a[2];
 	        // Correct field ordering for YNAB  
 	        return [date, payee, "", "", outflow, inflow];
 	    };
@@ -71,7 +71,7 @@
 	})();
 	// Translates DNB CSV in $source into YNAB CSV in $target
 	var transform_CSV = function (source, target) {
-	    var source_text = source.val().replace(/""/, "");
+	    var source_text = source.val().replace(/""/g, "");
 	    var parsed_data = parse.parse(source_text, { delimiter: ';', header: true, skipEmptyLines: true })
 	        .data;
 	    var dnb_entries = parsed_data.map(function (row) { return DNBEntry.FromFields(row); });
