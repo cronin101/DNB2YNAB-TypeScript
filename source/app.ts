@@ -39,9 +39,20 @@ class DNBEntry{
     const date = this.date.replace(/\./g, "/");
     
     // Remove commas from all fields
-    const [payee, outflow, inflow] = 
-      [this.payee, this.outflow, this.inflow]
-          .map(s => (s || "").replace(/,/g, ''))
+    const payee = this.payee.replace(/,/g, '');
+    
+    const amount_example = this.outflow || this.inflow;
+    
+    // Norwegian format has "." before the "," when traversing ltr
+    const is_norsk_format = amount_example.indexOf('.') < amount_example.indexOf(',');
+    
+    const format_amount = is_norsk_format
+        ? (amount: string) => amount.replace(/\./g, '').replace(/,/g, '.')
+        : (amount: string) => amount.replace(/,/g, '');
+    
+    const [outflow, inflow] = 
+      [this.outflow, this.inflow]
+          .map(s => format_amount(s || ""))
         
     // Correct field ordering for YNAB  
     return [date, payee, "", "", outflow, inflow]

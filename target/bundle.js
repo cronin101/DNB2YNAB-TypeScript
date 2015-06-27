@@ -60,8 +60,15 @@
 	        // Slashes for Date formatting
 	        var date = this.date.replace(/\./g, "/");
 	        // Remove commas from all fields
-	        var _a = [this.payee, this.outflow, this.inflow]
-	            .map(function (s) { return (s || "").replace(/,/g, ''); }), payee = _a[0], outflow = _a[1], inflow = _a[2];
+	        var payee = this.payee.replace(/,/g, '');
+	        var amount_example = this.outflow || this.inflow;
+	        // Norwegian format has "." before the "," when traversing ltr
+	        var is_norsk_format = amount_example.indexOf('.') < amount_example.indexOf(',');
+	        var format_amount = is_norsk_format
+	            ? function (amount) { return amount.replace(/\./g, '').replace(/,/g, '.'); }
+	            : function (amount) { return amount.replace(/,/g, ''); };
+	        var _a = [this.outflow, this.inflow]
+	            .map(function (s) { return format_amount(s || ""); }), outflow = _a[0], inflow = _a[1];
 	        // Correct field ordering for YNAB  
 	        return [date, payee, "", "", outflow, inflow];
 	    };
