@@ -60,7 +60,7 @@
 	        var date = this.date.replace(/\./g, "/");
 	        // Remove commas from all fields
 	        var _a = [this.payee, this.outflow, this.inflow]
-	            .map(function (s) { return s.replace(/,/g, ''); }), payee = _a[0], outflow = _a[1], inflow = _a[2];
+	            .map(function (s) { return (s || "").replace(/,/g, ''); }), payee = _a[0], outflow = _a[1], inflow = _a[2];
 	        // Correct field ordering for YNAB  
 	        return [date, payee, "", "", outflow, inflow];
 	    };

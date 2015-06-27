@@ -40,7 +40,7 @@ class DNBEntry{
     // Remove commas from all fields
     const [payee, outflow, inflow] = 
       [this.payee, this.outflow, this.inflow]
-          .map(s => s.replace(/,/g, ''))
+          .map(s => (s || "").replace(/,/g, ''))
         
     // Correct field ordering for YNAB  
     return [date, payee, "", "", outflow, inflow]
