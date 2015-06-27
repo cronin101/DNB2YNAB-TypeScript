@@ -2,6 +2,7 @@
 
 import * as parse from 'papaparse';
 import * as $ from 'jquery';
+import 'jquery-ui';
 
 // The fields present on DNB's CSV format
 interface IDNBRowEN {
@@ -33,7 +34,7 @@ class DNBEntry{
     
   }
   
-  public to_YNAB_entry() {
+  public to_YNAB_entry(): string[] {
     // Slashes for Date formatting
     const date = this.date.replace(/\./g, "/");
     
@@ -46,7 +47,13 @@ class DNBEntry{
     return [date, payee, "", "", outflow, inflow]
   }
   
-  static FromFields(row: IDNBRow){
+  public isBeforeDate(date: string): boolean {
+    //ISO 8601 for Dates
+    const [d, m ,y] = this.date.split('.');
+    return Date.parse(date) > Date.parse(`${y}-${m}-${d}`);
+  }
+  
+  static FromFields(row: IDNBRow): DNBEntry {
     const englishRow = <IDNBRowEN> row;
     const norskRow = <IDNBRowNO> row;
     return new DNBEntry(
@@ -67,8 +74,11 @@ const transform_CSV = (source: JQuery, target: JQuery) => {
       .data;
   
   const dnb_entries = parsed_data.map(row => DNBEntry.FromFields(row));
-      
-  const ynab_entries = dnb_entries.map(row => row.to_YNAB_entry());
+  const cutoff_date = $("#datepicker").val()
+  const filtered_dnb_entries = cutoff_date
+      ? dnb_entries.filter(e => !e.isBeforeDate(cutoff_date))
+      : dnb_entries;
+  const ynab_entries = filtered_dnb_entries.map(row => row.to_YNAB_entry());
   
   const transformed_csv = parse.unparse({
       fields: ['Date', 'Payee', 'Category', 'Memo', 'Outflow', 'Inflow'],
@@ -99,5 +109,5 @@ $(() => {
   
   $('#download').click(() => save_text_to_file($('#target'), 'transactions.csv'));
   
-  //$('#datepicker').datepicker();
+  $('#datepicker').datepicker({ dateFormat: 'yy-mm-dd' });
 })

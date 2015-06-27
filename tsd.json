@@ -10,6 +10,9 @@
     },
     "jquery/jquery.d.ts": {
       "commit": "2c96e9e77765b72ce43ab8163f42e504f3e2facb"
+    },
+    "jqueryui/jqueryui.d.ts": {
+      "commit": "2c96e9e77765b72ce43ab8163f42e504f3e2facb"
     }
   }
 }
