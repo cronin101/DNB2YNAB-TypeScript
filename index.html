@@ -1,0 +1,43 @@
+<html>
+  <head>
+    <script src="/target/bundle.js"></script>
+      
+    <style>
+      body {
+        text-align: center;
+      }
+      
+      textarea {
+        font-family: monospace;
+        font-weight: bold;
+        font-size: 12px;
+        width: 90%;
+        height: 40%;
+        margin: 10px;
+      } 
+      
+      textarea.dnb {
+        border: solid 2px;
+        border-color: rgba(00, 144, 144, 0.9);
+        color: rgba(00, 144, 144, 1);
+      }
+      
+      textarea.ynab {
+        border: solid 2px;
+        border-color: rgba(13, 85, 127, 0.9);
+        color: rgba(13, 85, 127, 1);
+      }
+    </style>
+  </head>
+  
+  <body>
+    <li>Paste <strong>CSV</strong> from <strong>DNB</strong> below:</li>
+    <textarea class="dnb" id="source"></textarea>
+    <br/>
+    <li>Then, <button class="green" id="transform">Transform it into YNAB format!</button></li>
+    <br/>
+    <textarea class="ynab" id="target"></textarea>
+    <br/>
+    <li>Finally, <button class="green" id="download">Download the above processed YNAB CSV!</button></li>
+  </body>
+</html>
