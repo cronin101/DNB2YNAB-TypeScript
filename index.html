@@ -15,6 +15,7 @@
         width: 90%;
         height: 30%;
         margin: 10px;
+        padding: 10px;
       } 
       
       textarea.dnb {
@@ -34,17 +35,17 @@
   <body>
     <h1>DNB to YNAB CSV Converter</h1>
     <hr></hr>
-    <li>First, paste <strong>CSV</strong>, downloaded from <strong>DNB</strong> online banking, below:</li>
+    First, paste <strong>CSV</strong>, downloaded from <strong>DNB</strong> online banking, below:
     <textarea class="dnb" id="source">
 "Date";"Description";"Interest date";"From account";"Deposits"
 "01.02.2003";"Example Income";"01.02.2003";"";"49,534.96"
 "01.02.2003";"Example Outgoing Payment";"01.02.2003";"2,490.00";""</textarea>
     <br/>
-    <li>Then, <button class="green" id="transform">transform it into the YNAB format!</button></li>
+    Then, <button class="green" id="transform">transform it into the YNAB format!</button>
     <br/>
     <textarea class="ynab" id="target"></textarea>
     <br/>
-    <li>Finally, <button class="green" id="download">download the converted-to-YNAB-format CSV!</button></li>
+    Finally, <button class="green" id="download">download the converted-to-YNAB-format CSV!</button>
     <br/>
     <footer>Source on <a href="https://github.com/cronin101/DNB2YNAB-TypeScript/blob/gh-pages/source/app.ts">GitHub</a>.</footer>
   </body>
