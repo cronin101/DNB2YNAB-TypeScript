@@ -1,5 +1,6 @@
 <html>
   <head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <script src="target/bundle.js"></script>
       
     <style>
@@ -12,7 +13,7 @@
         font-weight: bold;
         font-size: 12px;
         width: 90%;
-        height: 40%;
+        height: 30%;
         margin: 10px;
       } 
       
@@ -31,16 +32,20 @@
   </head>
   
   <body>
-    <li>Paste <strong>CSV</strong> from <strong>DNB</strong> below:</li>
+    <h1>DNB to YNAB CSV Converter</h1>
+    <hr></hr>
+    <li>First, paste <strong>CSV</strong>, downloaded from <strong>DNB</strong> online banking, below:</li>
     <textarea class="dnb" id="source">
 "Date";"Description";"Interest date";"From account";"Deposits"
 "01.02.2003";"Example Income";"01.02.2003";"";"49,534.96"
 "01.02.2003";"Example Outgoing Payment";"01.02.2003";"2,490.00";""</textarea>
     <br/>
-    <li>Then, <button class="green" id="transform">Transform it into YNAB format!</button></li>
+    <li>Then, <button class="green" id="transform">transform it into the YNAB format!</button></li>
     <br/>
     <textarea class="ynab" id="target"></textarea>
     <br/>
-    <li>Finally, <button class="green" id="download">Download the above processed YNAB CSV!</button></li>
+    <li>Finally, <button class="green" id="download">download the converted-to-YNAB-format CSV!</button></li>
+    <br/>
+    <footer>Source on <a href="https://github.com/cronin101/DNB2YNAB-TypeScript/blob/gh-pages/source/app.ts">GitHub</a>.</footer>
   </body>
 </html>
