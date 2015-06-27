@@ -48,60 +48,25 @@
 	var parse = __webpack_require__(1);
 	var $ = __webpack_require__(2);
 	__webpack_require__(3);
-	var DNBEntry = (function () {
-	    function DNBEntry(date, payee, interest_date, outflow, inflow) {
-	        this.date = date;
-	        this.payee = payee;
-	        this.interest_date = interest_date;
-	        this.outflow = outflow;
-	        this.inflow = inflow;
-	    }
-	    DNBEntry.prototype.to_YNAB_entry = function () {
-	        // Slashes for Date formatting
-	        var date = this.date.replace(/\./g, "/");
-	        // Remove commas from all fields
-	        var payee = this.payee.replace(/,/g, '');
-	        var amount_example = this.outflow || this.inflow;
-	        // Norwegian format has "." before the "," when traversing ltr
-	        var is_norsk_format = amount_example.indexOf('.') < amount_example.indexOf(',');
-	        var format_amount = is_norsk_format
-	            ? function (amount) { return amount.replace(/\./g, '').replace(/,/g, '.'); }
-	            : function (amount) { return amount.replace(/,/g, ''); };
-	        var _a = [this.outflow, this.inflow]
-	            .map(function (s) { return format_amount(s || ""); }), outflow = _a[0], inflow = _a[1];
-	        // Correct field ordering for YNAB  
-	        return [date, payee, "", "", outflow, inflow];
-	    };
-	    DNBEntry.prototype.isBeforeDate = function (date) {
-	        //ISO 8601 for Dates
-	        var _a = this.date.split('.'), d = _a[0], m = _a[1], y = _a[2];
-	        return Date.parse(date) > Date.parse(y + "-" + m + "-" + d);
-	    };
-	    DNBEntry.FromFields = function (row) {
-	        var englishRow = row;
-	        var norskRow = row;
-	        return new DNBEntry(englishRow.Date || norskRow.Dato, englishRow.Description || norskRow.Forklaring, englishRow["Interest date"] || norskRow.Forklaring, englishRow["From account"] || norskRow.Uttak, englishRow.Deposits || norskRow.Innskudd);
-	    };
-	    return DNBEntry;
-	})();
+	var DNB = __webpack_require__(4);
 	// Translates DNB CSV in $source into YNAB CSV in $target
 	var transform_CSV = function (source, target) {
 	    var source_text = source.val().replace(/""/g, "");
 	    var parsed_data = parse.parse(source_text, { delimiter: ';', header: true, skipEmptyLines: true })
 	        .data;
-	    var dnb_entries = parsed_data.map(function (row) { return DNBEntry.FromFields(row); });
+	    var dnb_entries = parsed_data.map(function (row) { return DNB.Transaction.FromFields(row); });
 	    var cutoff_date = $("#datepicker").val();
 	    var filtered_dnb_entries = cutoff_date
 	        ? dnb_entries.filter(function (e) { return !e.isBeforeDate(cutoff_date); })
 	        : dnb_entries;
-	    var ynab_entries = filtered_dnb_entries.map(function (row) { return row.to_YNAB_entry(); });
+	    var ynab_entries = filtered_dnb_entries.map(function (row) { return row.to_YNAB_format(); });
 	    var transformed_csv = parse.unparse({
 	        fields: ['Date', 'Payee', 'Category', 'Memo', 'Outflow', 'Inflow'],
 	        data: ynab_entries
 	    });
 	    target.text(transformed_csv);
 	};
-	// Triggers a download of 'transactions.csv' containing the contents of $target
+	// Triggers a download of containing the contents of $target
 	var save_text_to_file = function (target, filename) {
 	    var contents = new Blob([target.val()], { type: 'text/plain' });
 	    var download_link = document.createElement('a');
@@ -25725,6 +25690,50 @@
 
 	}( jQuery ) );
 
+
+/***/ },
+/* 4 */
+/***/ function(module, exports) {
+
+	var Transaction = (function () {
+	    function Transaction(date, payee, interest_date, outflow, inflow) {
+	        this.date = date;
+	        this.payee = payee;
+	        this.interest_date = interest_date;
+	        this.outflow = outflow;
+	        this.inflow = inflow;
+	    }
+	    // Returns the transaction in a format understood by YNAB
+	    Transaction.prototype.to_YNAB_format = function () {
+	        // Slashes for Date formatting
+	        var date = this.date.replace(/\./g, "/");
+	        // Remove commas from all fields
+	        var payee = this.payee.replace(/,/g, '');
+	        // Norwegian format has "." before the "," when traversing ltr
+	        var amount_example = this.outflow || this.inflow;
+	        var is_norsk_format = amount_example.indexOf('.') < amount_example.indexOf(',');
+	        // The monetary amount should be in US/British format with no commas
+	        var format_amount = is_norsk_format
+	            ? function (amount) { return amount.replace(/\./g, '').replace(/,/g, '.'); }
+	            : function (amount) { return amount.replace(/,/g, ''); };
+	        var _a = [this.outflow, this.inflow].map(function (s) { return format_amount(s || ""); }), outflow = _a[0], inflow = _a[1];
+	        // Correct field ordering for YNAB  
+	        return [date, payee, "", "", outflow, inflow];
+	    };
+	    Transaction.prototype.isBeforeDate = function (date) {
+	        //ISO 8601 for Dates
+	        var _a = this.date.split('.'), d = _a[0], m = _a[1], y = _a[2];
+	        return Date.parse(date) > Date.parse(y + "-" + m + "-" + d);
+	    };
+	    Transaction.FromFields = function (row) {
+	        var englishRow = row;
+	        var norskRow = row;
+	        return new Transaction(englishRow.Date || norskRow.Dato, englishRow.Description || norskRow.Forklaring, englishRow["Interest date"] || norskRow.Forklaring, englishRow["From account"] || norskRow.Uttak, englishRow.Deposits || norskRow.Innskudd);
+	    };
+	    return Transaction;
+	})();
+	exports.Transaction = Transaction;
+	//# sourceMappingURL=DNB.js.map
 
 /***/ }
 /******/ ]);
