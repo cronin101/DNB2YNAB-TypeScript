@@ -4,13 +4,24 @@ import * as parse from 'papaparse';
 import * as $ from 'jquery';
 
 // The fields present on DNB's CSV format
-interface IDNBRow {
+interface IDNBRowEN {
   Date: string;
   Deposits: string;
   Description: string;
   "From account": string;
   "Interest date": string;
 }
+
+interface IDNBRowNO {
+  Dato: string;
+  Forklaring: string;
+  Rentedato: string;
+  Uttak: string;
+  Innskudd: string;
+}
+
+// Handle both EN and NO languages in CSV
+type IDNBRow = IDNBRowEN | IDNBRowNO;
 
 class DNBEntry{
   constructor(
@@ -36,12 +47,14 @@ class DNBEntry{
   }
   
   static FromFields(row: IDNBRow){
+    const englishRow = <IDNBRowEN> row;
+    const norskRow = <IDNBRowNO> row;
     return new DNBEntry(
-      row.Date,
-      row.Description,
-      row["Interest date"],
-      row["From account"],
-      row.Deposits);
+      englishRow.Date || norskRow.Dato,
+      englishRow.Description || norskRow.Forklaring,
+      englishRow["Interest date"] || norskRow.Forklaring,
+      englishRow["From account"] || norskRow.Uttak,
+      englishRow.Deposits || norskRow.Innskudd);
   }
 }
 

@@ -65,7 +65,9 @@
 	        return [date, payee, "", "", outflow, inflow];
 	    };
 	    DNBEntry.FromFields = function (row) {
-	        return new DNBEntry(row.Date, row.Description, row["Interest date"], row["From account"], row.Deposits);
+	        var englishRow = row;
+	        var norskRow = row;
+	        return new DNBEntry(englishRow.Date || norskRow.Dato, englishRow.Description || norskRow.Forklaring, englishRow["Interest date"] || norskRow.Forklaring, englishRow["From account"] || norskRow.Uttak, englishRow.Deposits || norskRow.Innskudd);
 	    };
 	    return DNBEntry;
 	})();
