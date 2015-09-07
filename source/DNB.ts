@@ -61,7 +61,7 @@ export class Transaction{
     return new Transaction(
       englishRow.Date || norskRow.Dato,
       englishRow.Description || norskRow.Forklaring,
-      englishRow["Interest date"] || norskRow.Forklaring,
+      englishRow["Interest date"] || norskRow.Rentedato,
       englishRow.Withdrawals || norskRow.Uttak,
       englishRow.Deposits || norskRow.Innskudd);
   }
