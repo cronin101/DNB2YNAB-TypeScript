@@ -46,9 +46,15 @@ const save_text_to_file = (target: JQuery, filename: string) => {
 }
 
 $(() => {
-  $('#transform').click(() => transform_CSV($('#source'), $('#target')));
+  $('#transform').click(() => {
+    (<any>window).ga('send', 'event', 'transform_button', 'click');
+    transform_CSV($('#source'), $('#target'));
+  });
   
-  $('#download').click(() => save_text_to_file($('#target'), 'transactions.csv'));
+  $('#download').click(() => {
+    (<any>window).ga('send', 'event', 'download_button', 'click');
+    save_text_to_file($('#target'), 'transactions.csv');
+  });
   
   $('#datepicker').datepicker({ dateFormat: 'yy-mm-dd' });
 })
