@@ -12,8 +12,8 @@ export interface IDNBRowNO {
   Dato: string;
   Forklaring: string;
   Rentedato: string;
-  Uttak: string;
-  Innskudd: string;
+  "Ut av konto": string;
+  "Inn på konto": string;
 }
 
 // Handle both EN and NO languages in CSV
@@ -62,7 +62,7 @@ export class Transaction{
       englishRow.Date || norskRow.Dato,
       englishRow.Description || norskRow.Forklaring,
       englishRow["Interest date"] || norskRow.Rentedato,
-      englishRow.Withdrawals || norskRow.Uttak,
-      englishRow.Deposits || norskRow.Innskudd);
+      englishRow.Withdrawals || norskRow["Ut av konto"],
+      englishRow.Deposits || norskRow["Inn på konto"]);
   }
 }
