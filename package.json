@@ -12,7 +12,7 @@
     "jquery": "^2.1.4",
     "jquery-ui": "^1.10.5",
     "node-libs-browser": "^0.5.2",
-    "papaparse": "^4.1.1"
+    "papaparse": "^5.3.0"
   },
   "devDependencies": {
     "awesome-typescript-loader": "^0.6.0-rc.5",
